@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import ProductForm from '~/components/product-form';
+import ReactHtmlParser from 'react-html-parser';
 
 const ProductDetail = (
     {
@@ -35,7 +36,9 @@ const ProductDetail = (
                         price={price}
                     />
                 </div>
-                <div className="product-description" dangerouslySetInnerHTML={{ __html: description }} />
+                <div className="product-description">
+                    {ReactHtmlParser(description)}    
+                </div>
             </div>
         </Fragment>
     );

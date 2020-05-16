@@ -1,18 +1,13 @@
 import React, { Fragment } from 'react';
 import { NAV_QUERY } from '~/gql/nav';
 import Link from 'next/link';
-import { connect } from "react-redux";
+import { connect, useSelector  } from "react-redux";
 import { useQuery } from '@apollo/react-hooks';
 import { withRedux } from '~/lib/redux';
 
-const mapStateToProps = (state) => {
-    return {
-        datacart: state.cart
-    }
-}
-
-const _Header = ({active, datacart}) => {
+const Header = ({active}) => {
     const { loading, data } = useQuery(NAV_QUERY);
+    const { qty } = useSelector((state) => state);
 
     if(loading) {
         return <div>Loading...</div>
@@ -59,7 +54,7 @@ const _Header = ({active, datacart}) => {
                     })}
                     <li className="cart">
                         <Link href="/cart">
-                            <a>Cart ({datacart === undefined? 0: datacart.length})</a>
+                            <a>Cart ({qty})</a>
                         </Link>
                     </li>
                 </ul>
@@ -68,5 +63,4 @@ const _Header = ({active, datacart}) => {
     );
 };
 
-const Header = connect(mapStateToProps, null)(_Header);
 export default withRedux(Header);
