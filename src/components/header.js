@@ -1,17 +1,23 @@
 import React, { Fragment } from 'react';
-import { useQuery } from '@apollo/react-hooks';
 import { NAV_QUERY } from '~/gql/nav';
 import Link from 'next/link';
+import { connect } from "react-redux";
+import { useQuery } from '@apollo/react-hooks';
+import { withRedux } from '~/lib/redux';
 
-const Header = ({active}) => {
-    const { loading, data } = useQuery(NAV_QUERY, {
-        fetchPolicy: 'network-only',
-    });
+const mapStateToProps = (state) => {
+    return {
+        datacart: state.cart
+    }
+}
+
+const _Header = ({active, datacart}) => {
+    const { loading, data } = useQuery(NAV_QUERY);
 
     if(loading) {
         return <div>Loading...</div>
     }
-
+    
     const categories = data.categoryList[0].children;
 
     return (
@@ -27,28 +33,19 @@ const Header = ({active}) => {
                     {categories.map((data, i) => {
                         return(
                             <li key={i}>
-                                <Link
-                                    href={`/category/${data.url_path}`}
-                                    as={`/category/${data.id}`}
-                                >
+                                <Link href="/category/[id]" as={`/category/${data.id}`}>
                                     <a>{data.name}</a>
                                 </Link>
                                 <ul className="dropdown">
                                     {data.children.map((data2, j) => (
                                         <li key={j}>
-                                            <Link
-                                                href={`/category/${data2.url_path}`}
-                                                as={`/category/${data2.id}`}
-                                            >
+                                            <Link href="/category/[id]" as={`/category/${data2.id}`}>
                                                 <a>{data2.name}</a>
                                             </Link>
                                             <ul>
                                                 {data2.children.map((data3, k) => (
                                                     <li key={k}>
-                                                        <Link
-                                                            href={`/category/${data3.url_path}`}
-                                                            as={`/category/${data3.id}`}
-                                                        >
+                                                        <Link href="/category/[id]" as={`/category/${data3.id}`}>
                                                             <a>{data3.name}</a>
                                                         </Link>
                                                     </li>
@@ -60,10 +57,16 @@ const Header = ({active}) => {
                             </li>
                         );
                     })}
+                    <li className="cart">
+                        <Link href="/cart">
+                            <a>Cart ({datacart === undefined? 0: datacart.length})</a>
+                        </Link>
+                    </li>
                 </ul>
             </nav>
         </Fragment>
     );
 };
 
-export default Header;
+const Header = connect(mapStateToProps, null)(_Header);
+export default withRedux(Header);

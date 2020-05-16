@@ -14,7 +14,7 @@ const ProductGrid = (
         <Fragment>
                 <div className="product-item">
                     <div className="product-item-image">
-                        <Link href={`/products/${product_url}`} >
+                        <Link href='/products/[slug]'  as={'/products/'+product_url} >
                             <a>
                                 <img src={image.url} alt={name}  />
                             </a>
@@ -22,7 +22,7 @@ const ProductGrid = (
                     </div>
                     <div className="product-item-info">
                         <div className="product-name">
-                            <Link href={`/products/${product_url}`} >
+                            <Link href='/products/[slug]'  as={'/products/'+product_url} >
                                 <a>
                                     {name}
                                 </a>

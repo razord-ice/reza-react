@@ -7,7 +7,6 @@ import { GET_PRODUCTS } from '~/gql/product';
 import Layout from '~components/layout';
 import ProductDetail from '~/components/product-detail';
 
-
 const ProductPage = () => {
     const { slug } = useRouter().query;
     const { loading, error, data } = useQuery(GET_PRODUCTS, {variables : { urlKey:slug }} );
