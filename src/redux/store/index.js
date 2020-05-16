@@ -1,26 +1,9 @@
 import { createStore } from 'redux';
 
-// const initialState = {
-//     cart:[]
-// };
-
 const initialState = {
     qty: 0,
     items: {},
 };
-
-// const reducer = ( state = initialState, action ) => {
-//     switch( action.type ){
-//         case 'ADD_TO_CART':
-//             state = {
-//                 ...state,
-//                 cart: [...state.cart, action.payloads]
-//             };
-//             return state;
-//         default:
-//             return state;
-//     }
-// };
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {

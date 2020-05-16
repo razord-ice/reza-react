@@ -30,7 +30,8 @@ const ProductDetail = (
                         <span className="special-price">{price.final_price.currency} {price.final_price.value}</span>
                     </div>
                     <ProductForm
-                        id={product_sku}
+                        id={id}
+                        sku={product_sku}
                         name={name}
                         image={image}
                         price={price}

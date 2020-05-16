@@ -27,6 +27,7 @@ const CategoryPage = () => {
     return (
         <Fragment>
             <Layout pageConfig={pageConfig}>
+                <h2 className="title-cat">{category.name}</h2>
                 <ProductGrid data={category.products.items}/>
             </Layout>
         </Fragment>

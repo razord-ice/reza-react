@@ -97,7 +97,9 @@ nav {
         float: right;
     }
 }
-
+.title-cat {
+    text-align: center;
+}
 .list{
     list-style-type: none;
     padding-left: 0;
@@ -162,7 +164,6 @@ nav {
                 .special-price{
                     color: #030303;
                     font-size: 14px;
-                    text-decoration: line-through;
                     font-weight: bold;
                 }
             }
@@ -210,7 +211,6 @@ nav {
         .special-price{
             color: #030303;
             font-size: 18px;
-            text-decoration: line-through;
             font-weight: bold;
         }
     }
@@ -264,4 +264,36 @@ nav {
             font-size: 14px;
         }
     }
+}
+.table-cart {
+    width: 100%;;
+    thead {
+        background-color: orange;
+        color: #000;
+        padding: 5px;
+    }
+    tbody {
+        td.img {
+            width: 20%;
+            text-align: center;
+            img {
+                width:100px;
+                height: 100px;
+                object-fit: cover;
+            }
+        }
+        .item-name-name {
+            white-space: nowrap;
+            display: block;
+            a {
+                color: orange;
+            }
+        }
+        .qty, .price {
+            text-align: center;
+        }
+    }
+}
+.page-title {
+    text-align: center;
 }

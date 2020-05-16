@@ -29,7 +29,7 @@ const ProductPage = () => {
         <Fragment>
             <Layout pageConfig={pageConfig}>
                 <ProductDetail
-                    id={product.sku}
+                    id={product.id}
                     name={product.name}
                     image={product.image}
                     description={product.description.html}

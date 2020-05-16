@@ -1,6 +1,7 @@
 import React, { Fragment, useState } from 'react';
 import { withApollo } from '~/lib/apollo';
 import { withRedux } from '~/lib/redux';
+import { useRouter } from "next/router";
 import { useQuery } from "@apollo/react-hooks";
 import { connect, useSelector, useDispatch } from 'react-redux';
 import { compose } from "redux";
@@ -11,12 +12,13 @@ const ProductForm = (
         name = undefined,
         image = undefined,
         price = undefined,
-        addToCart = undefined
+        sku = undefined
     }
 ) => {
     const [qty, setQty] = useState(1);
     const items = useSelector((state) => state.items);
     const dispatch = useDispatch();
+    const router = useRouter();
 
     const plusQty = () => {
         setQty(qty + 1)
@@ -34,6 +36,8 @@ const ProductForm = (
             [id]: {
                 id: id,
                 name: name,
+                sku: sku,
+                url_key: router.query.slug,
                 image: image,
                 qty: parseInt(qty) + parseInt(fix_qty),
                 price: price
