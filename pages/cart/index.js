@@ -29,7 +29,7 @@ const CartPage = ({data = undefined}) => {
                     <td>
                         <div className="item-name">
                             <span className="item-name-name">
-                                <Link href="/product/[slug]" as={`/product/${item.url_key}`}>
+                                <Link href="/products/[slug]" as={`/products/${item.url_key}`}>
                                     {item.name}
                                 </Link>
                             </span>

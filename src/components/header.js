@@ -18,7 +18,7 @@ const Header = ({active}) => {
     return (
         <Fragment>
             <div className="header">
-                <h3>REZA REACT</h3>
+                <h3>TOKO GA ADA APA-APA</h3>
             </div>
             <nav className="section nav">
                 <ul>
