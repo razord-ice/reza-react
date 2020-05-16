@@ -1,28 +1,10 @@
-import Link from 'next/link';
+import React, { Fragment } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import gql from 'graphql-tag';
+import { NAV_QUERY } from '~/gql/nav';
+import Link from 'next/link';
 
-const CATEGORIES_QUERY = gql`
-    {
-        categoryList {
-            children {
-                id
-                name
-                children {
-                    id
-                    name
-                    children {
-                        id
-                        name
-                    }
-                }
-            }
-        }
-    }
-`;
-
-const Navigation = () => {
-    const { loading, data } = useQuery(CATEGORIES_QUERY, {
+const Header = ({active}) => {
+    const { loading, data } = useQuery(NAV_QUERY, {
         fetchPolicy: 'network-only',
     });
 
@@ -33,38 +15,41 @@ const Navigation = () => {
     const categories = data.categoryList[0].children;
 
     return (
-        <div>
+        <Fragment>
+            <div className="header">
+                <h3>REZA REACT</h3>
+            </div>
             <nav className="section nav">
                 <ul>
                     <li>
                         <Link href="/"><a>Home</a></Link>
                     </li>
-                    {categories.map((catLvl1, i) => {
+                    {categories.map((data, i) => {
                         return(
                             <li key={i}>
                                 <Link
-                                    href="/category/[id]"
-                                    as={`/category/${catLvl1.id}`}
+                                    href={`/category/${data.url_path}`}
+                                    as={`/category/${data.id}`}
                                 >
-                                    <a>{catLvl1.name}</a>
+                                    <a>{data.name}</a>
                                 </Link>
                                 <ul className="dropdown">
-                                    {catLvl1.children.map((catLvl2, j) => (
+                                    {data.children.map((data2, j) => (
                                         <li key={j}>
                                             <Link
-                                                href="/category/[id]"
-                                                as={`/category/${catLvl2.id}`}
+                                                href={`/category/${data2.url_path}`}
+                                                as={`/category/${data2.id}`}
                                             >
-                                                <a>{catLvl2.name}</a>
+                                                <a>{data2.name}</a>
                                             </Link>
                                             <ul>
-                                                {catLvl2.children.map((catLvl3, k) => (
+                                                {data2.children.map((data3, k) => (
                                                     <li key={k}>
                                                         <Link
-                                                            href="/category/[id]"
-                                                            as={`/category/${catLvl3.id}`}
+                                                            href={`/category/${data3.url_path}`}
+                                                            as={`/category/${data3.id}`}
                                                         >
-                                                            <a>{catLvl3.name}</a>
+                                                            <a>{data3.name}</a>
                                                         </Link>
                                                     </li>
                                                 ))}
@@ -77,8 +62,8 @@ const Navigation = () => {
                     })}
                 </ul>
             </nav>
-        </div>
+        </Fragment>
     );
-}
+};
 
-export default Navigation;
+export default Header;

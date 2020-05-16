@@ -1,135 +1,36 @@
-import { useRouter } from 'next/router';
-import Layout from '../../components/layout';
-import gql from 'graphql-tag';
+import React, { Fragment } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { withApollo } from '../../lib/apollo';
-import ReactHtmlParser, {
-    processNodes,
-    convertNodeToElement,
-    htmlparser2,
-} from 'react-html-parser';
-import Link from 'next/link';
-import Price from '../../components/price';
+import { useRouter } from 'next/router';
+import { withApollo } from '~/lib/apollo';
+import ProductGrid from '~/components/product-grid';
+import Layout from '~components/layout';
+import { GET_CATEGORY } from '~/gql/category';
 
-const CATEGORY = gql`
-    query getCategoryById($id: String!) {
-        categoryList(filters: { ids: { eq: $id } }) {
-            name
-            url_key
-            image_path
-            description
-            products {
-                items {
-                    id
-                    name
-                    url_key
-                    description {
-                        html
-                    }
-                    small_image {
-                        url
-                    }
-                    price_range {
-                        minimum_price {
-                            regular_price {
-                                currency
-                                value
-                            }
-                            final_price {
-                                currency
-                                value
-                            }
-                        }
-                    }
-                }
-            }
-        }
+const CategoryPage = () => {
+    const { id } = useRouter().query;
+    const { data, loading, error } = useQuery(GET_CATEGORY, {variables : { id:id }} )
+
+    if (error) {
+        return <h4>Error!!!</h4>
     }
-`;
-
-const Category = () => {
-    const router = useRouter();
-    const { id } = router.query;
-    const { data, loading } = useQuery(CATEGORY, {variables: {id: id}})
 
     if(loading) {
         return <div>Loading...</div>
     }
+
     const category = data.categoryList[0];
-    
+
     const pageConfig = {
-        title: category.name,
-        className: 'page-category'
-    };
-
-    const renderCategoryInfo = () => {
-        const imgBanner = () => {
-            if (category.image_path) {
-                return (
-                    <div className="category-banner">
-                        <img src={category.image_path} alt={category.name} />
-                    </div>  
-                )
-            }
-        };
-
-        const catDesc = () => {
-            if (category.description) {
-                return (
-                    <div className="category-desc">
-                        {ReactHtmlParser(category.description)}
-                    </div>
-                );
-            }
-        };
-
-        return (
-            <div className="category-info">
-                {imgBanner}
-                {catDesc}
-            </div>
-        );
-    };
+        title: category.name
+    }
 
     return (
-        <Layout pageConfig={pageConfig}>
-            {renderCategoryInfo}
-            <div className="page-title-wrapper">
-                <h1 className="page-title">
-                    {category.name}
-                </h1>
-            </div>
-            <div className="products-grid">
-                <ol className="products list items product-items">
-                    {category.products.items.map((item) => (
-                        <li className="item product product-item">
-                            <div className="product-item-info">
-                                <div className="product-image">
-                                    <img
-                                        src={item.small_image.url}
-                                        alt={item.name}
-                                    />
-                                </div>
-                                <div className="product-info">
-                                    <div className="product-name">
-                                        <Link
-                                            href="/product/[url_key]"
-                                            as={`/product/${item.url_key}`}
-                                        >
-                                            <a>{item.name}</a>
-                                        </Link>
-                                    </div>
-                                    <div className="product-price">
-                                        <Price priceRange={item.price_range} />
-                                    </div>
-                                </div>
-                            </div>
-                        </li>
-                    ))}
-                </ol>
-            </div>
-        </Layout>
+        <Fragment>
+            <Layout pageConfig={pageConfig}>
+                <ProductGrid data={category.products.items}/>
+            </Layout>
+        </Fragment>
     );
-}
+};
 
-export default (withApollo)(Category);
+export default withApollo(CategoryPage);
